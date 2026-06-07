@@ -1,0 +1,22 @@
+{
+    "configurations": [
+        {
+            "name": "Climber_Vision_2026",
+            "forcedInclude": [
+                "${workspaceFolder}/.vscode/eigen_fix.h"
+            ],
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/io/serial/include",
+                "/usr/include/opencv4",
+                "/usr/include/eigen3",
+                "/opt/intel/openvino_2026.1.0/runtime/include/"
+            ],
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "c17",
+            "cppStandard": "gnu++17",
+            "intelliSenseMode": "linux-gcc-x64"
+        }
+    ],
+    "version": 4
+}

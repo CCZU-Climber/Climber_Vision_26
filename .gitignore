@@ -1,0 +1,13 @@
+/build 
+/logs
+/patterns
+/MvSdkLog
+/imgs
+/kernel.errors.txt
+/assets/img_with_q
+# .vscode
+logs
+/records
+/__pycache__/**
+.claude
+CLAUDE.md

@@ -1,0 +1,145 @@
+# enemy_color: "red"
+enemy_color: "blue" 
+
+#####-----神经网络参数-----#####
+yolo_name: yolov5
+classify_model: assets/tiny_resnet.onnx
+yolo11_model_path: assets/yolo11.xml
+yolov8_model_path: assets/yolov8.xml
+yolov5_model_path: assets/yolov5.xml
+device: GPU
+min_confidence: 0.8
+use_traditional: true
+
+#####-----ROI-----#####
+roi: 
+  x: 420
+  y: 50
+  width: 600
+  height: 600
+
+use_roi: false
+
+#####-----传统方法参数-----#####
+threshold: 150
+max_angle_error: 45 # degree
+min_lightbar_ratio: 1.5
+max_lightbar_ratio: 20
+min_lightbar_length: 8
+min_armor_ratio: 1
+max_armor_ratio: 5
+max_side_ratio: 1.5
+max_rectangular_error: 25 # degree
+# min_confidence: 0.6
+
+#####-----tracker参数-----#####
+min_detect_count: 5
+max_temp_lost_count: 15
+outpost_max_temp_lost_count: 24
+
+#####-----aimer参数-----#####
+yaw_offset: 0 # degree -2.5
+pitch_offset: 0 # degree 2
+comming_angle: 60 # degree
+leaving_angle: 20 # degree
+decision_speed: 8 # rad/s
+high_speed_delay_time: 0.015 # s
+low_speed_delay_time: 0.015 # s
+
+#####-----shooter参数-----#####
+first_tolerance: 3 # 近距离射击容差，degree
+second_tolerance: 2 # 远距离射击容差，degree
+judge_distance: 2 #距离判断阈值
+auto_fire: true # 是否由自瞄控制射击
+
+camera_name: "hikrobot"
+exposure_ms: 5
+gain: 15
+# user_id: "" # 添加user_id参数，如果为空则使用默认相机
+vid_pid: "2bdf:0001"
+
+#  1  0  0
+#  0  1  0
+#  0  0  1
+
+R_gimbal2imubody: [1, 0, 0, 0, 0, 1, 0, 1, 0]
+
+# 重投影误差: 0.0970px
+camera_matrix: [2362.2981242315168, 0, 736.32145114403227, 0, 2363.2185369518506, 518.13076636374728, 0, 0, 1]
+distort_coeffs: [-0.029903371841836456, 0.16482007403792051, 0.0004526592509512923, 0.00040881732697622714, 0]
+
+
+R_camera2gimbal: [0.0305391, 0.0261644, 0.999191, -0.999534, 0.000799411, 0.0305287, 0, -0.999657, 0.0261766]
+t_camera2gimbal: [0.1635, -0.10118, 0.0025]
+
+
+
+
+#####-----gimbal参数-----#####
+com_port: "/dev/ttyRVleft"
+
+#####-----planner-----#####
+fire_thresh: 0.003
+jump_thresh: 5              # deg, 帧间 yaw 跳变阈值
+fire_cooldown_frames: 5     # 跳变后抑制开火帧数
+
+max_yaw_acc: 50
+Q_yaw: [9e6, 0]
+R_yaw: [1]
+
+max_pitch_acc: 100
+Q_pitch: [9e6,0]
+R_pitch: [1]
+
+#####-----buff_detector参数-----#####
+ConfidenceThreshold: 0.2
+IouThreshold: 0.2
+model: "assets/buff_repvgg.xml"
+binary_threshold: 120            # 二值化阈值 (0-255)
+dilate_kernel_size: 5           # 膨胀核大小 px
+dilate_iterations: 1            # 膨胀迭代次数
+r_center_extrapolate: 1.4       # R标中心外推因子 (point差乘以此系数)
+r_center_mask_ratio: 0.8        # mask半径 = 扇叶到中心距离 * 此比例
+r_center_contour_div: 3.0       # 轮廓距离加权除数 (越大距离权重越小)
+dedup_distance: 18.0            # 候选框去重中心距离 px
+lose_max: 20                    # 连续无检测帧数上限
+
+#####-----buff_aimer参数-----#####
+fire_gap_time: 0.520   # s
+predict_time: 0.100     # s
+
+reprojection_error_threshold_px: 20.0
+
+#####-----buff_target参数（EKF预测、丢失处理与噪声）-----#####
+buff_target:
+  # ── 丢失处理 ──
+  max_lost_frames: 20           # 无识别时短时预测最大帧数
+  lost_count_cap: 20            # lost_count_ 封顶值（max_lost_frames+10左右）
+  lost_log_suppress: 3          # 超阈值后只在前N帧打印丢失日志
+
+  # ── 小符运动学 ──
+  small_w: 1.047                # 小符标称角速度 rad/s (π/3 ≈ 60°/s)
+  converge_delay: 5             # 收敛前置免发散判断的帧数
+  divergence_eps: 0.1745        # 小符速度发散容差 rad/s (π/18 ≈ 10°/s)
+
+  # ── 小符EKF: R1 — [R_yaw, R_pitch, R_dis, roll] 测量噪声 ──
+  #   ↑值=更平滑/滞后  ↓值=更灵敏/毛刺
+  ekf_r1: [0.05, 0.05, 1.0, 0.2]
+
+  # ── 小符EKF: R2 — [B_yaw, B_pitch, B_dis] blade约束噪声 ──
+  ekf_r2: [0.05, 0.05, 1.0]
+
+  # ── 过程噪声 ──
+  ekf_q_v1: 0.001              # 小符 yaw角加速度方差
+  ekf_q_v1_big: 0.9            # 大符 yaw角加速度方差
+  ekf_q_roll_big: 0.09         # 大符 roll过程噪声
+  ekf_q_spd_big: 0.5           # 大符 spd过程噪声
+  prediction_roll_q: 0.005       # 预测帧roll过程噪声 (rad^2/s^2)
+  max_prediction_variance: 0.3   # 预测帧roll协方差上限 (rad^2)
+
+  # ── 调参速查 ──
+  #   波形毛刺多 → 翻倍 ekf_r1[0:2] / ekf_r2[0:2] (0.05 → 0.1 → 0.2)
+  #   跟踪滞后   → 减半 ekf_r1[0:2] / ekf_r2[0:2]
+  #   距离跳动   → 翻倍 ekf_r1[2] / ekf_r2[2] (1.0 → 2.0)
+  #   切扇叶跳变 → 翻倍 ekf_r1[3] (0.2 → 0.4)
+  #   发散频繁   → 增大 divergence_eps (0.1745 → 0.3)

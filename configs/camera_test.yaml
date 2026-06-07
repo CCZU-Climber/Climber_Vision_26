@@ -1,0 +1,6 @@
+camera_name: "hikrobot"
+exposure_ms: 2
+gamma: 12
+gain : 12
+vid_pid: "2bdf:0001"
+user_id: I

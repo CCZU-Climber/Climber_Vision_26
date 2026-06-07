@@ -1,0 +1,61 @@
+camera_name: "hikrobot"
+exposure_ms: 8
+gain: 16
+vid_pid: "2bdf:0001"
+
+
+
+pattern_cols: 11
+pattern_rows: 8
+center_distance_mm: 30
+pattern_type: "chessboard"  # "chessboard" 或 "circles"
+
+# R_gimbal2imubody: [0, -1, 0,
+#                   1, 0, 0,
+#                   0, 0, 1]
+R_gimbal2imubody: [1, 0, 0,
+                  0, 1, 0,
+                  0, 0, 1]
+
+com_port: "/dev/ttyAIM"
+speed_control: false
+bullet_speed: 22.0  # m/s
+
+
+# # 重投影误差: 0.1169px
+# camera_matrix: [4815.8778038713654, 0, 680.31629940359335, 0, 4816.1050764401816, 549.69639644399524, 0, 0, 1]
+# distort_coeffs: [0.017742711969554844, 0.58417192166654219, -0.00070889228269611405, -0.0010227294524332319, 0]
+# 重投影误差: 0.0741px
+camera_matrix: [2390.7652808161829, 0, 747.06362453894155, 0, 2392.1242926903096, 554.06871899751968, 0, 0, 1]
+distort_coeffs: [-0.027662307196150242, 0.15679391931781414, -0.00038511790210182128, 0.00050426619032081267, 0]
+
+# 相机同理想情况的偏角: yaw0.02 pitch1.81 roll-5.25 degree
+R_camera2gimbal: [-0.003260156803281955, 0.031421546261080346, 0.99950090435585937, -0.9958023355216421, -0.091529072824359403, -0.00037067176355320974, 0.091471743982834475, -0.99530654336162983, 0.031588048281951497]
+t_camera2gimbal: [0.024508830094749742, -0.042005935207413046, 0.083898023496225049]
+
+#####-----USB相机参数-----#####
+image_width: 1280.0
+image_height: 720.0
+usb_exposure: 120.0
+usb_frame_rate: 30.0
+usb_gamma: 15.0
+usb_gain: 15.0
+
+# 相机设备名映射
+camera_name_map:
+  camera_back_right:
+    yaw: -120.0
+    fov_h: 59.84
+    fov_v: 35.94
+    flip: false
+  camera_back_left:
+    yaw: 120.0
+    fov_h: 54.2
+    fov_v: 44.5
+    flip: false
+
+#####-----全向感知参数-----#####
+perception_device: CPU  # 感知相机推理设备: CPU 或 GPU
+default_fov_h: 60.0  # 默认水平视场角（度）
+default_fov_v: 45.0  # 默认垂直视场角（度）
+mode: 1  # 决策模式

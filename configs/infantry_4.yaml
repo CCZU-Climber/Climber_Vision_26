@@ -1,0 +1,151 @@
+# enemy_color: "red"
+enemy_color: "blue"
+
+tradition_detect: false
+#####-----神经网络参数-----#####
+yolo_name: yolov5
+classify_model: assets/tiny_resnet.onnx
+yolo11_model_path: assets/yolo11.xml
+yolov8_model_path: assets/yolov8.xml
+yolov5_model_path: assets/yolov5.xml
+device: GPU
+min_confidence: 0.8 #0.8 #原检测阈值
+use_traditional: true
+
+#####-----ROI-----#####
+roi: 
+  x: 420
+  y: 50
+  width: 600
+  height: 600
+
+use_roi: false
+
+#####-----传统方法参数-----#####
+threshold: 150.0 #S
+max_angle_error: 45 # degree
+min_lightbar_ratio: 1.5
+max_lightbar_ratio: 20
+min_lightbar_length: 8
+min_armor_ratio: 1
+max_armor_ratio: 5
+max_side_ratio: 1.5
+max_rectangular_error: 25 # degree
+# min_confidence: 0.8
+
+#####-----tracker参数-----#####
+min_detect_count: 5               #追踪检测次数阈值
+max_temp_lost_count: 15           #装甲板最大丢失帧数
+outpost_max_temp_lost_count: 24   #前哨站最大丢失帧数
+
+#####-----aimer参数-----#####
+air_resistance_k: 0.022928514188  # 线性空气阻力系数，0=真空弹道 (RMCV标定)
+yaw_offset: 0 # degree -2.5
+pitch_offset: 0 # degree 2
+comming_angle: 55 # degree
+leaving_angle: 25 # degree
+decision_speed: 8 # rad/s
+high_speed_delay_time: 0.05 # s
+low_speed_delay_time: 0.05 # s
+
+#####-----shooter参数-----#####
+first_tolerance: 5 # 近距离射击容差，degree
+second_tolerance: 1.5 # 远距离射击容差，degree
+judge_distance: 2 #距离判断阈值
+auto_fire: true # 是否由自瞄控制射击
+ 
+camera_name: "hikrobot"
+
+# 手眼标定参数
+pattern_cols: 11
+pattern_rows: 8
+center_distance_mm: 30
+pattern_type: "chessboard"  # "chessboard" 或 "circles"
+exposure_ms: 3
+gain: 13
+vid_pid: "2bdf:0001"
+
+#  1  0  0
+#  0  1  0
+#  0  0  1
+
+# R_gimbal2imubody: [0, -1, 0,
+#                   1, 0, 0,
+#                   0, 0, 1]
+R_gimbal2imubody: [1, 0, 0,
+                  0, 1, 0,
+                  0, 0, 1]
+
+# 重投影误差: 0.0915px
+camera_matrix: [2401.5386681616842, 0, 735.98915087332057, 0, 2401.8861907243995, 522.88511886073411, 0, 0, 1]
+distort_coeffs: [-0.026564352552813589, 0.16388696738072575, 0.00053367494849226773, 0.00083134791652104056, 0]
+
+
+
+
+
+# 相机同理想情况的偏角: yaw-3.33 pitch1.41 roll1.28 degree
+# 标定板到世界原点水平距离: 1.49 m
+# 标定板同竖直摆放时的偏角: yaw5.66 pitch3.32 roll179.68 degree
+R_camera2gimbal: [0.0174524, 0.0436127, 0.998896, -0.999848, 0.00076126, 0.0174358, 0, -0.999048, 0.0436193]
+t_camera2gimbal: [0.16, -0.04, -0.025]
+
+# R_camera2gimbal: [0, 0, 1, -1, 0, 0, 0, -1, 0]
+# R_camera2gimbal: [0.0305391, 0.0261644, 0.999191, -0.999534, 0.000799411, 0.0305287, 0, -0.999657, 0.0261766]
+# t_camera2gimbal: [0.1635, -0.102, 0.00]
+#####-----gimbal参数-----#####
+com_port: "/dev/ttyUSB0"
+baudrate: 921600
+speed_control: true
+bullet_speed: 23.0 # m/s
+
+#####-----handeye标定参数-----#####
+height: 0.0
+grid_num: 100
+grid_size: 0.01
+
+
+
+#####-----planner-----#####
+fire_thresh: 0.0035
+
+
+max_yaw_acc: 50
+Q_yaw: [9e6, 0]
+R_yaw: [1]
+
+max_pitch_acc: 100
+Q_pitch: [9e6, 0]
+R_pitch: [1]
+
+#####-----buff_detector参数-----#####
+ConfidenceThreshold: 0.5
+IouThreshold: 0.2
+model: "assets/buff_repvgg.xml"
+binary_threshold: 120            # 二值化阈值 (0-255)
+dilate_kernel_size: 5           # 膨胀核大小 px
+dilate_iterations: 1            # 膨胀迭代次数
+r_center_extrapolate: 1.4       # R标中心外推因子 (point差乘以此系数)
+r_center_mask_ratio: 0.8        # mask半径 = 扇叶到中心距离 * 此比例
+r_center_contour_div: 3.0       # 轮廓距离加权除数 (越大距离权重越小)
+r_center_refine_max_shift: 5.0  # 传统R相对模型R的最大修正量 px
+dedup_distance: 18.0            # 候选框去重中心距离 px
+lose_max: 20                    # 连续无检测帧数上限
+small_assoc_max_jump_px: 9999.0  # 小符目标中心跨帧最大跳变 px
+
+#####-----buff_aimer参数-----#####
+fire_gap_time: 0.50   # s
+predict_time: 0.1     # s
+
+#####-----buff_pnp参数-----#####
+pnp_mode: "4i"                   # 4=仅IPPE, 4i=IPPE+4点精化, 5=额外加入R中心精化
+reprojection_error_threshold_px: 30.0
+buff_r_to_target: 0.700          # R中心到靶心距离，单位m
+buff_target_top: 0.127           # 靶面上边中点相对靶心的径向距离，单位m (SP校准)
+buff_target_bottom: 0.127        # 靶面下边中点相对靶心的径向距离，单位m (SP校准)
+buff_target_left: 0.127          # 靶面左边中点相对靶心的切向距离，单位m (SP校准)
+buff_target_right: 0.127         # 靶面右边中点相对靶心的切向距离，单位m (SP校准)
+buff_r_center_z: 0.0             # 当前模型R中心在buff系z坐标；直出R中心时为0
+
+#####-----buff_target参数-----#####
+# EKF/跟踪参数已硬编码至 buff_target.cpp 的 load_target_params()

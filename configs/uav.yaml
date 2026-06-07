@@ -1,0 +1,121 @@
+enemy_color: "red"
+# enemy_color: "blue"
+
+tradition_detect: false
+#####-----神经网络参数-----#####
+yolo_name: yolov5
+classify_model: assets/tiny_resnet.onnx
+yolo11_model_path: assets/yolo11.xml
+yolov8_model_path: assets/yolov8.xml
+yolov5_model_path: assets/yolov5.xml
+device: GPU
+min_confidence: 0.8
+use_traditional: true
+
+#####-----ROI-----#####
+roi: 
+  x: 420
+  y: 50
+  width: 600
+  height: 600
+
+use_roi: false
+
+#####-----传统方法参数-----#####
+threshold: 150.0
+max_angle_error: 45 # degree
+min_lightbar_ratio: 1.5
+max_lightbar_ratio: 20
+min_lightbar_length: 8
+min_armor_ratio: 1
+max_armor_ratio: 5
+max_side_ratio: 1.5
+max_rectangular_error: 25 # degree
+
+#####-----tracker参数-----#####
+min_detect_count: 5
+max_temp_lost_count: 10
+outpost_max_temp_lost_count: 75
+
+#####-----aimer参数-----#####
+air_resistance_k: 0.016  # 线性空气阻力系数，0=真空弹道
+yaw_offset: 0 # degree
+pitch_offset: 0 # degree
+outpost_pitch_offset: 0 # degree, 前哨站专用pitch补偿
+comming_angle: 30 # degree
+leaving_angle: 8 # degree
+decision_speed: 8 # rad/s
+high_speed_delay_time: 0.015 #s
+low_speed_delay_time: 0.015 #s
+# high_speed_delay_time: 0.03 #s
+# low_speed_delay_time: 0.025 #s
+#####-----shooter参数-----#####
+first_tolerance: 2 # 近距离射击容差，degree
+second_tolerance: 2  # 远距离射击容差，degree
+judge_distance: 0 #距离判断阈值
+auto_fire: true # 是否由自瞄控制射击
+
+camera_name: "hikrobot"
+exposure_ms: 3
+gain: 14
+vid_pid: "2bdf:0001"
+
+
+R_gimbal2imubody: [1, 0, 0,
+                  0, 1, 0,
+                  0, 0, 1]
+
+
+# 重投影误差: 0.1169px
+camera_matrix: [4815.8778038713654, 0, 680.31629940359335, 0, 4816.1050764401816, 549.69639644399524, 0, 0, 1]
+distort_coeffs: [0.017742711969554844, 0.58417192166654219, -0.00070889228269611405, -0.0010227294524332319, 0]
+
+
+# 相机同理想情况的偏角: yaw-1.89 pitch-0.79 roll0.32 degree
+# 标定板到世界原点水平距离: 2.54 m
+# 标定板同竖直摆放时的偏角: yaw-3.16 pitch4.46 roll179.51 degree
+# R_camera2gimbal: [0, -0.00872654, 0.999962, -1, 0, 0, 0, -0.999962, -0.00872654]
+# t_camera2gimbal: [0.08, 0, -0.05]
+R_camera2gimbal: [-0.0244318, 0.0104688, 0.999647, -0.999701, -0.000255847, -0.0244305, 0, -0.999945, 0.0104719]
+t_camera2gimbal: [0.08, 0, -0.05]
+#####-----handeye标定参数-----#####
+height: 0.0
+grid_num: 1000
+grid_size: 0.05
+
+#####-----gimbal参数-----#####
+com_port: "/dev/ttyRVleft"
+baudrate: 921600
+speed_control: true
+bullet_speed: 24  # m/s
+
+#####-----planner-----#####
+fire_thresh: 0.003
+
+
+max_yaw_acc: 10
+Q_yaw: [9e6, 0]
+R_yaw: [1]
+
+max_pitch_acc: 100
+Q_pitch: [9e6, 0]
+R_pitch: [1]
+
+#####-----buff_detector参数-----#####
+ConfidenceThreshold: 0.2
+IouThreshold: 0.2
+model: "assets/yolo11_buff_int8.xml"
+binary_threshold: 120
+dilate_kernel_size: 5
+dilate_iterations: 1
+r_center_extrapolate: 1.4
+r_center_mask_ratio: 0.8
+r_center_contour_div: 3.0
+dedup_distance: 18.0
+lose_max: 20
+
+#####-----buff_aimer参数-----#####
+fire_gap_time: 0.520
+predict_time: 0.100
+
+reprojection_error_threshold_px: 20.0

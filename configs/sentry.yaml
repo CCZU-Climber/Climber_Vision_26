@@ -1,0 +1,139 @@
+enemy_color: "red"
+# enemy_color: "blue"
+
+tradition_detect: false
+#####-----神经网络参数-----#####
+yolo_name: yolov8
+classify_model: assets/tiny_resnet.onnx
+yolo11_model_path: assets/yolo11.xml
+yolov8_model_path: assets/yolov8.xml
+yolov5_model_path: assets/yolov5.xml
+device: GPU
+min_confidence: 0.8
+use_traditional: true
+
+#####-----ROI-----#####
+roi: 
+  x: 420
+  y: 50
+  width: 600
+  height: 600
+
+use_roi: false
+
+#####-----传统方法参数-----#####
+threshold: 150.0
+max_angle_error: 45 # degree
+min_lightbar_ratio: 1.5
+max_lightbar_ratio: 20
+min_lightbar_length: 8
+min_armor_ratio: 1
+max_armor_ratio: 5
+max_side_ratio: 1.5
+max_rectangular_error: 25 # degree
+
+#####-----tracker参数-----#####
+min_detect_count: 3
+max_temp_lost_count: 25
+outpost_max_temp_lost_count: 75
+
+
+#####-----aimer参数-----#####
+air_resistance_k: 0.016  # 线性空气阻力系数，0=真空弹道
+yaw_offset: 0 # degree
+pitch_offset: 0 # degree
+comming_angle: 55 # degree
+leaving_angle: 20 # degree
+decision_speed: 8 # rad/s
+high_speed_delay_time: 0.015 # s
+low_speed_delay_time: 0.015 # s
+
+#####-----shooter参数-----#####
+first_tolerance: 2 # 近距离射击容差，degree
+second_tolerance: 0.2  # 远距离射击容差，degree
+judge_distance: 4 #距离判断阈值
+auto_fire: true # 是否由自瞄控制射击
+
+camera_name: "hikrobot"
+exposure_ms: 4
+gain: 14
+vid_pid: "2bdf:0001"
+
+# R_gimbal2imubody: [0, 1, 0,
+#                   -1, 0, 0,
+#                   0, 0, 1]
+R_gimbal2imubody: [1, 0, 0,
+                  0, 1, 0,
+                  0, 0, 1]
+
+
+# 重投影误差: 0.5875px
+camera_matrix: [2392.7066032289049, 0, 733.35950647541574, 0, 2390.729645145419, 554.59749243984515, 0, 0, 1]
+distort_coeffs: [0.016501965568465244, -0.20983076650369323, -0.0010867536026780763, -0.0030913619750234339, 0]
+
+
+
+# R_camera2gimbal: [0, 0, 1, -1, 0, 0, 0, -1, 0]
+# t_camera2gimbal: [0.11, 0.00, 0.075]
+R_camera2gimbal: [-0.0209424, 0, 0.999781, -0.999781, 0, -0.0209424, 0, -1, 0]
+t_camera2gimbal: [0.11, 0.0, 0.075]
+# t_camera2gimbal: [0.11, 0.05, 0.075]     #左正右负
+# 相机同理想情况的偏角: yaw1.23 pitch-0.86 roll1.53 degree
+# 标定板到世界原点水平距离: 2.07 m
+# 标定板同竖直摆放时的偏角: yaw77.91 pitch4.01 roll-179.51 degree
+# R_camera2gimbal: [-0.021935921621836049, -0.014378781135944286, 0.99965597382081639, -0.99940452603019481, 0.026953757886767408, -0.021542708421729062, -0.026634727198955467, -0.99953326387310681, -0.014961474466478419]
+# t_camera2gimbal: [0.097739602733347003, -0.024411830749465516, 0.077919415180755194]
+
+
+
+#####-----handeye标定参数-----#####
+height: 0.0
+grid_num: 100
+grid_size: 0.01
+
+#####-----gimbal参数-----#####
+com_port: "/dev/ttyAIM"
+baudrate: 921600
+speed_control: true
+bullet_speed: 30  # m/s
+
+#####-----planner-----#####
+fire_thresh: 0.01
+
+
+
+max_yaw_acc: 10
+Q_yaw: [9e5, 0]
+R_yaw: [3]
+
+max_pitch_acc: 50
+Q_pitch: [9e5, 0]
+R_pitch: [3]
+
+#####-----USB相机参数-----#####
+image_width: 640.0
+image_height: 480.0
+# usb_exposure: 120.0
+usb_frame_rate: 30.0
+usb_gamma: 5.0
+usb_gain: 5.0
+
+# 相机设备名映射
+camera_name_map:
+  camera_back_left:
+    yaw: -140.0
+    fov_h: 60.0
+    fov_v: 45.0
+    flip: true
+  camera_back_right:
+    yaw: 140.0
+    fov_h: 60.0
+    fov_v: 45.0
+    flip: true
+#####-----全向感知参数-----#####
+perception_device: CPU  # 感知相机推理设备: CPU 或 GPU
+default_fov_h: 60.0  # 默认水平视场角（度）
+default_fov_v: 45.0  # 默认垂直视场角（度600）
+perception_pitch_offset: 0  # 全局默认pitch补偿，未在camera_name_map中配置时生效（degree）
+omni_memory_duration_ms: 400  # 全向感知记忆延时，单位ms
+mode: 1  # 决策模式
